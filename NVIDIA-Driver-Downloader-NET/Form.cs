@@ -14,6 +14,7 @@ public class Form : System.Windows.Forms.Form
     private ProgressBar progressBar = new ProgressBar() { Visible = false, Dock = DockStyle.Fill, Anchor = AnchorStyles.Right };
     private StatusBar statusBar = new StatusBar() { Visible = false, SizingGrip = false };
     private ComboBox driverComponentsComboBox = new ComboBox() { DropDownStyle = ComboBoxStyle.DropDownList };
+
     public Form()
     {
         if (nvidiaGpu.name.Length == 0)
@@ -231,6 +232,7 @@ public class Form : System.Windows.Forms.Form
             }
             catch (NullReferenceException) { }
         }
+        this.progressBar.Value = 0;
         this.statusBar.ResetText();
         process.WaitForExit();
         process.Close();
