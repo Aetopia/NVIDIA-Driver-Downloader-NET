@@ -93,6 +93,9 @@ public class Form : System.Windows.Forms.Form
             }
             downloadButton.Enabled = false;
             extractButton.Enabled = false;
+            driverTypeComboBox.Enabled = false;
+            driverVersionsComboBox.Enabled = false;
+            this.driverComponentsComboBox.Enabled = false;
             this.statusBar.Text = "Get Driver Versions...";
             driverVersionsComboBox.Items.Clear();
             driverVersionsComboBox.Items.AddRange(NvidiaDownloadApi.GetDriverVersions(nvidiaGpu, studio, standard).ToArray());
@@ -100,6 +103,9 @@ public class Form : System.Windows.Forms.Form
             driverVersionsComboBox.SelectedIndex = driverVersionsComboBox.Items.Count - 1;
             downloadButton.Enabled = true;
             extractButton.Enabled = true;
+            driverTypeComboBox.Enabled = true;
+            driverVersionsComboBox.Enabled = true;
+            this.driverComponentsComboBox.Enabled = true;
         });
 
         driverComponentsComboBox.Items.AddRange(new string[] { "None", "PhysX", "HD Audio", "PhysX + HD Audio", "All" });
