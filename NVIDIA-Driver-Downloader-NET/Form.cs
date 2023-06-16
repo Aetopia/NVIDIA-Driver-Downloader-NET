@@ -11,12 +11,12 @@ using System.IO;
 public class Form : System.Windows.Forms.Form
 {
     private NvidiaDownloadApi.NvidiaGpu nvidiaGpu = NvidiaDownloadApi.GetGpu();
-    private ProgressBar progressBar = new ProgressBar() { Visible = false, Dock = DockStyle.Fill, Anchor = AnchorStyles.Bottom | AnchorStyles.Left };
-    private StatusBar statusBar = new StatusBar() { SizingGrip = false };
-    private Thread thread = Thread.CurrentThread;
+    private ProgressBar progressBar = new ProgressBar() { Visible = false, Dock = DockStyle.Fill, Anchor = AnchorStyles.Right };
+    private StatusBar statusBar = new StatusBar() { Visible = false, SizingGrip = false };
+    private ComboBox driverComponentsComboBox = new ComboBox() { DropDownStyle = ComboBoxStyle.DropDownList };
     public Form()
     {
-        if (nvidiaGpu.name.Length != 0)
+        if (nvidiaGpu.name.Length == 0)
         {
             MessageBox.Show("NVIDIA GPU not detected!", "NVIDIA Driver Downloader .NET", MessageBoxButtons.OK, MessageBoxIcon.Error);
             Environment.Exit(1);
@@ -26,6 +26,7 @@ public class Form : System.Windows.Forms.Form
         this.FormBorderStyle = FormBorderStyle.FixedSingle;
         this.MinimizeBox = false;
         this.MaximizeBox = false;
+        this.FormClosed += (sender, e) => Environment.Exit(1);
         this.CenterToScreen();
         bool studio = false, standard = false;
         string tempFolder = Environment.GetEnvironmentVariable("TEMP"), downloadLink = "", fileName = "";
@@ -40,14 +41,22 @@ public class Form : System.Windows.Forms.Form
         Label
         nvidiaGpuLabel = new Label() { Text = $"GPU:", AutoSize = true, AutoEllipsis = true, Padding = new Padding(0, 5, 0, 0) },
         nvidiaGpuNameLabel = new Label() { Text = nvidiaGpu.name, AutoSize = true, AutoEllipsis = true, Padding = new Padding(0, 5, 0, 0) },
-        driverVersionLabel = new Label() { Text = "Driver Version:", Padding = new Padding(0, 5, 0, 0) },
-        driverTypeLabel = new Label() { Text = "Driver Type:", Padding = new Padding(0, 5, 0, 0) };
+        driverVersionLabel = new Label() { Text = "Driver Version:", Padding = new Padding(0, 5, 0, 0), AutoSize = true, AutoEllipsis = true },
+        driverTypeLabel = new Label() { Text = "Driver Type:", Padding = new Padding(0, 5, 0, 0), AutoSize = true, AutoEllipsis = true },
+        driverComponentsLabel = new Label() { Text = "Driver Components:", Padding = new Padding(0, 5, 0, 0), AutoSize = true, AutoEllipsis = true },
+        extractLabel = new Label() { Text = "Extract:", Padding = new Padding(0, 5, 0, 0), AutoSize = true, AutoEllipsis = true };
 
         ComboBox
         driverVersionsComboBox = new ComboBox() { DropDownStyle = ComboBoxStyle.DropDownList },
         driverTypeComboBox = new ComboBox() { DropDownStyle = ComboBoxStyle.DropDownList };
 
-        Button downloadButton = new Button()
+        Button
+        extractButton = new Button()
+        {
+            Text = "Extract",
+            Anchor = AnchorStyles.Bottom | AnchorStyles.Left
+        },
+        downloadButton = new Button()
         {
             Text = "Download",
             Anchor = AnchorStyles.Bottom | AnchorStyles.Right
@@ -55,9 +64,13 @@ public class Form : System.Windows.Forms.Form
 
         Action<bool> nvidiaDownloadApiInvoked = (bool invoked) =>
         {
-            downloadButton.Enabled = !invoked;
+            downloadButton.Visible = !invoked;
+            extractButton.Visible = !invoked;
             driverVersionsComboBox.Enabled = !invoked;
             driverTypeComboBox.Enabled = !invoked;
+            this.driverComponentsComboBox.Enabled = !invoked;
+            statusBar.Visible = invoked;
+            this.progressBar.Visible = invoked;
         };
 
         driverTypeComboBox.Items.AddRange(new string[] { "Game Ready DCH", "Game Ready STD", "Studio DCH", "Studio STD" });
@@ -78,20 +91,26 @@ public class Form : System.Windows.Forms.Form
                     standard = true;
                     break;
             }
-            nvidiaDownloadApiInvoked(true);
+            downloadButton.Enabled = false;
+            extractButton.Enabled = false;
+            this.statusBar.Text = "Get Driver Versions...";
             driverVersionsComboBox.Items.Clear();
-            this.statusBar.Text = $"Getting {driverTypeComboBox.Text} Versions...";
             driverVersionsComboBox.Items.AddRange(NvidiaDownloadApi.GetDriverVersions(nvidiaGpu, studio, standard).ToArray());
             this.statusBar.ResetText();
             driverVersionsComboBox.SelectedIndex = driverVersionsComboBox.Items.Count - 1;
-            nvidiaDownloadApiInvoked(false);
+            downloadButton.Enabled = true;
+            extractButton.Enabled = true;
         });
+
+        driverComponentsComboBox.Items.AddRange(new string[] { "None", "PhysX", "HD Audio", "PhysX + HD Audio", "All" });
+        driverComponentsComboBox.SelectedIndex = 0;
 
         downloadButton.Click += (sender, e) =>
         {
-            this.statusBar.Text = "Downloading NVIDIA Driver Package...";
+            this.statusBar.Text = "Downloading...";
             nvidiaDownloadApiInvoked(true);
             this.progressBar.Visible = true;
+            this.statusBar.Visible = true;
             (new Thread(async () =>
             {
                 downloadLink = NvidiaDownloadApi.GetDriverDownloadLink(nvidiaGpu, driverVersionsComboBox.Text, studio, standard);
@@ -103,17 +122,29 @@ public class Form : System.Windows.Forms.Form
                         if (this.progressBar.Value != e.ProgressPercentage)
                         {
                             this.progressBar.Value = e.ProgressPercentage;
-                            this.statusBar.Text = $"Downloading NVIDIA Driver Package: {this.progressBar.Value}%";
+                            this.statusBar.Text = $"Downloading: {this.progressBar.Value}%";
                         }
                     };
                     webClient.DownloadFileCompleted += (sender, e) => this.progressBar.Value = 0;
-                    await webClient.DownloadFileTaskAsync(new Uri(downloadLink), fileName);
+                    await webClient.DownloadFileTaskAsync(downloadLink, fileName);
                 }
-                this.statusBar.Text = $"Extracting NVIDIA Driver Package....";
-                this.ExtractDriverPackage(fileName);
+                this.ExtractDriverPackage(fileName, this.driverComponentsComboBox.Text);
                 nvidiaDownloadApiInvoked(false);
-                this.progressBar.Visible = false;
             })).Start();
+        };
+
+        extractButton.Click += (sender, e) =>
+        {
+            OpenFileDialog openFileDialog = (new OpenFileDialog() { Filter = "Executable Files (*.exe)|*.exe" });
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                nvidiaDownloadApiInvoked(true);
+                (new Thread(() =>
+                {
+                    this.ExtractDriverPackage(openFileDialog.FileName, driverComponentsComboBox.Text);
+                    nvidiaDownloadApiInvoked(false);
+                })).Start();
+            }
         };
 
         tableLayoutPanel.Controls.Add(nvidiaGpuLabel, 1, 0);
@@ -122,23 +153,43 @@ public class Form : System.Windows.Forms.Form
         tableLayoutPanel.Controls.Add(driverVersionsComboBox, 2, 1);
         tableLayoutPanel.Controls.Add(driverTypeLabel, 1, 2);
         tableLayoutPanel.Controls.Add(driverTypeComboBox, 2, 2);
-        tableLayoutPanel.Controls.Add(progressBar, 1, 3);
-        tableLayoutPanel.Controls.Add(downloadButton, 2, 3);
+        tableLayoutPanel.Controls.Add(driverComponentsLabel, 1, 3);
+        tableLayoutPanel.Controls.Add(driverComponentsComboBox, 2, 3);
+        tableLayoutPanel.Controls.Add(extractButton, 1, 4);
+        tableLayoutPanel.Controls.Add(downloadButton, 2, 4);
+        this.statusBar.Controls.Add(progressBar);
         this.Controls.Add(tableLayoutPanel);
         this.Controls.Add(this.statusBar);
         driverTypeComboBox.SelectedIndex = 0;
     }
 
 
-    private void ExtractDriverPackage(string fileName)
+    private void ExtractDriverPackage(string fileName, string componentOption)
     {
-        const string Components = "Display.Driver NVI2 EULA.txt ListDevices.txt setup.cfg setup.exe";
+        this.statusBar.Text = $"Extracting...";
+        string components = "Display.Driver NVI2 EULA.txt ListDevices.txt setup.cfg setup.exe";
         int i = 0;
         string
         sevenZipFileName = $"{Environment.GetEnvironmentVariable("TEMP")}/7zr.exe",
         path = $"{Path.GetDirectoryName(fileName)}\\{Path.GetFileNameWithoutExtension(fileName)}";
         Process process;
         string[] contents;
+
+        switch (componentOption)
+        {
+            case "PhysX":
+                components += "PhysX";
+                break;
+            case "HD Audio":
+                components += "HDAudio";
+                break;
+            case "PhysX + HD Audio":
+                components += "PhysX HDAudio";
+                break;
+            case "All":
+                components = "";
+                break;
+        }
 
         if (Directory.Exists(path))
             Directory.Delete(path, true);
@@ -148,7 +199,7 @@ public class Form : System.Windows.Forms.Form
             new ProcessStartInfo()
             {
                 FileName = sevenZipFileName,
-                Arguments = $"x -bso0 -bsp1 -bse1 -aoa \"{Path.GetFullPath(fileName).Trim()}\" {Components} -o\"{path}\"",
+                Arguments = $"x -bso0 -bsp1 -bse1 -aoa \"{Path.GetFullPath(fileName).Trim()}\" {components} -o\"{path}\"",
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
                 RedirectStandardInput = true,
@@ -162,24 +213,27 @@ public class Form : System.Windows.Forms.Form
             int result = 0;
             try
             {
+                this.FormClosing += (sender, e) => { try { process.Kill(); } catch (System.InvalidOperationException) { } };
                 while ((line = streamReader.ReadLine().Split('%')[0].Trim()) != null)
                 {
-                    if (!thread.IsAlive)
-                        process.Kill();
                     if (line.Length != 0 && int.TryParse(line, out result))
                     {
                         this.progressBar.Value = result;
-                        this.statusBar.Text = $"Extracting NVIDIA Driver Package: {this.progressBar.Value}%";
+                        this.statusBar.Text = $"Extracting: {this.progressBar.Value}%";
                     }
                 }
             }
             catch (NullReferenceException) { }
         }
         this.statusBar.ResetText();
+        process.WaitForExit();
         process.Close();
 
-
-        contents = File.ReadAllLines($"{path}\\setup.cfg");
+        try
+        {
+            contents = File.ReadAllLines($"{path}\\setup.cfg");
+        }
+        catch (System.IO.DirectoryNotFoundException) { return; }
         for (i = 0; i < contents.Length - 1; i++)
         {
             if ((new string[]{"<file name=\"${{EulaHtmlFile}}\"/>",
