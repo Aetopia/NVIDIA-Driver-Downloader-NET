@@ -40,7 +40,7 @@ public class Form : System.Windows.Forms.Form
 
 
         Label
-        nvidiaGpuLabel = new Label() { Text = $"GPU:", AutoSize = true, AutoEllipsis = true, Padding = new Padding(0, 5, 0, 0) },
+        nvidiaGpuLabel = new Label() { Text = "GPU:", AutoSize = true, AutoEllipsis = true, Padding = new Padding(0, 5, 0, 0) },
         nvidiaGpuNameLabel = new Label() { Text = nvidiaGpu.name, AutoSize = true, AutoEllipsis = true, Padding = new Padding(0, 5, 0, 0) },
         driverVersionLabel = new Label() { Text = "Driver Version:", Padding = new Padding(0, 5, 0, 0), AutoSize = true, AutoEllipsis = true },
         driverTypeLabel = new Label() { Text = "Driver Type:", Padding = new Padding(0, 5, 0, 0), AutoSize = true, AutoEllipsis = true },
