@@ -21,5 +21,5 @@ A tool to download NVIDIA Driver Packages.
 3. Run the following command:
 
     ```cmd
-    dotnet.exe build --configuration Release
+    dotnet.exe build "NVIDIA-Driver-Downloader-NET\NVIDIA-Driver-Downloader-NET.csproj" --configuration Release
     ```
