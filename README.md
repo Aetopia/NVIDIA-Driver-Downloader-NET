@@ -8,9 +8,9 @@ A tool to download NVIDIA Driver Packages.
 
     |Property|Operation|
     |-|-|
-    |Driver Version|Select a driver version. **`[Download]`**|
-    |Driver Type|Select a driver type. **`[Download]`**|
-    |Driver Components|Select which driver components should be extract alongside the display driver. **`[Download]` \| `[Extract]`**|
+    |Driver Version|Select a driver version.
+    |Driver Type|Select a driver type.
+    |Driver Components|Select which driver components should be extracted alongside the display driver. 
 4. 
     - Hit the `[Download]` button to download a NVIDIA Driver Package.
     - Hit the `[Extract]` button to extract a NVIDIA Driver Package.
