@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+<PropertyGroup>
+<OutputType>WinExe</OutputType>
+<TargetFramework>net481</TargetFramework>
+<UseWindowsForms>true</UseWindowsForms>
+<LangVersion>latest</LangVersion>
+<AssemblyName>NVIDIA Driver Downloader .NET</AssemblyName>
+<Copyright>Aetopia</Copyright>
+</PropertyGroup>
+
+<ItemGroup>
+<Reference Include="System.Management"/>
+</ItemGroup>
+</Project>
