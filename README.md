@@ -5,6 +5,7 @@ A tool to download NVIDIA Driver Packages.
 1. Download the latest release and open the program.
 2. The program will auto detect your system's NVIDIA GPU.
 3. Driver Options: 
+
     |Property|Operation|
     |-|-|
     |Driver Version|Select a driver version. **`[Download]`**|
