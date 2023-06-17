@@ -13,7 +13,7 @@ public class Form : System.Windows.Forms.Form
     private NvidiaDownloadApi.NvidiaGpu nvidiaGpu = NvidiaDownloadApi.GetGpu();
     private ProgressBar progressBar = new ProgressBar() { Visible = false, Dock = DockStyle.Fill, Anchor = AnchorStyles.Right };
     private StatusBar statusBar = new StatusBar() { Visible = false, SizingGrip = false };
-    private ComboBox driverComponentsComboBox = new ComboBox() { DropDownStyle = ComboBoxStyle.DropDownList };
+    private ComboBox driverComponentsComboBox = new ComboBox() { DropDownStyle = ComboBoxStyle.DropDownList, Dock = DockStyle.Fill };
 
     public Form()
     {
@@ -40,22 +40,22 @@ public class Form : System.Windows.Forms.Form
 
 
         Label
-        nvidiaGpuLabel = new Label() { Text = "GPU:", AutoSize = true, AutoEllipsis = true, Padding = new Padding(0, 5, 0, 0) },
-        nvidiaGpuNameLabel = new Label() { Text = nvidiaGpu.name, AutoSize = true, AutoEllipsis = true, Padding = new Padding(0, 5, 0, 0) },
-        driverVersionLabel = new Label() { Text = "Driver Version:", Padding = new Padding(0, 5, 0, 0), AutoSize = true, AutoEllipsis = true },
-        driverTypeLabel = new Label() { Text = "Driver Type:", Padding = new Padding(0, 5, 0, 0), AutoSize = true, AutoEllipsis = true },
-        driverComponentsLabel = new Label() { Text = "Driver Components:", Padding = new Padding(0, 5, 0, 0), AutoSize = true, AutoEllipsis = true },
-        extractLabel = new Label() { Text = "Extract:", Padding = new Padding(0, 5, 0, 0), AutoSize = true, AutoEllipsis = true };
+        nvidiaGpuLabel = new Label() { Text = "GPU:", AutoSize = true, AutoEllipsis = true, Padding = new Padding(0, 5, 0, 0), Dock = DockStyle.Fill },
+        nvidiaGpuNameLabel = new Label() { Text = nvidiaGpu.name, AutoSize = true, AutoEllipsis = true, Padding = new Padding(0, 5, 0, 0), Dock = DockStyle.Fill },
+        driverVersionLabel = new Label() { Text = "Driver Version:", Padding = new Padding(0, 5, 0, 0), AutoSize = true, AutoEllipsis = true, Dock = DockStyle.Fill },
+        driverTypeLabel = new Label() { Text = "Driver Type:", Padding = new Padding(0, 5, 0, 0), AutoSize = true, AutoEllipsis = true, Dock = DockStyle.Fill },
+        driverComponentsLabel = new Label() { Text = "Driver Components:", Padding = new Padding(0, 5, 0, 0), AutoSize = true, AutoEllipsis = true, Dock = DockStyle.Fill },
+        extractLabel = new Label() { Text = "Extract:", Padding = new Padding(0, 5, 0, 0), AutoSize = true, AutoEllipsis = true, Dock = DockStyle.Fill };
 
         ComboBox
-        driverVersionsComboBox = new ComboBox() { DropDownStyle = ComboBoxStyle.DropDownList },
-        driverTypeComboBox = new ComboBox() { DropDownStyle = ComboBoxStyle.DropDownList };
+        driverVersionsComboBox = new ComboBox() { DropDownStyle = ComboBoxStyle.DropDownList, Dock = DockStyle.Fill },
+        driverTypeComboBox = new ComboBox() { DropDownStyle = ComboBoxStyle.DropDownList, Dock = DockStyle.Fill };
 
         Button
         extractButton = new Button()
         {
             Text = "Extract",
-            Anchor = AnchorStyles.Bottom | AnchorStyles.Left
+            Anchor = AnchorStyles.Bottom | AnchorStyles.Left,
         },
         downloadButton = new Button()
         {

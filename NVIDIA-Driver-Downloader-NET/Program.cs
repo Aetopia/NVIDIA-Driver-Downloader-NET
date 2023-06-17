@@ -1,10 +1,9 @@
-using System;
 using System.Windows.Forms;
 
 
 class Program
 {
-    [STAThread]
+    [System.STAThread]
     public static void Main(string[] args)
     {
         Application.EnableVisualStyles();
