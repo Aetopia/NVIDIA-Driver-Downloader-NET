@@ -256,7 +256,7 @@ public class Form : System.Windows.Forms.Form
             foreach (string element in (new string[]{
             "<string name=\"ProgressPresentationUrl\" value=",
                 "<string name=\"ProgressPresentationSelectedPackageUrl\" value="}))
-                if (contents[i].Trim().StartsWith($"\t\t{element}"))
+                if (contents[i].Trim().StartsWith(element))
                     contents[i] = $"\t\t{element}\"\"/>";
         File.WriteAllLines($"{path}\\NVI2\\presentations.cfg", contents, System.Text.Encoding.ASCII);
 
