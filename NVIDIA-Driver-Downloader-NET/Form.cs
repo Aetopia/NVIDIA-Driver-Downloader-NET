@@ -240,26 +240,26 @@ public class Form : System.Windows.Forms.Form
         try
         {
             contents = File.ReadAllLines($"{path}\\setup.cfg");
-        }
-        catch (System.IO.DirectoryNotFoundException) { return; }
-        for (i = 0; i < contents.Length - 1; i++)
-        {
-            if ((new string[]{"<file name=\"${{EulaHtmlFile}}\"/>",
+            for (i = 0; i < contents.Length - 1; i++)
+            {
+                if ((new string[]{"<file name=\"${{EulaHtmlFile}}\"/>",
                 "<file name=\"${{FunctionalConsentFile}}\"/>",
                 "<file name=\"${{PrivacyPolicyFile}}\"/>"}).Contains(contents[i].Trim()))
-                contents[i] = "";
-        }
-        File.WriteAllLines($"{path}\\setup.cfg", contents, System.Text.Encoding.ASCII);
+                    contents[i] = "";
+            }
+            File.WriteAllLines($"{path}\\setup.cfg", contents, System.Text.Encoding.ASCII);
 
-        contents = File.ReadAllLines($"{path}\\NVI2\\presentations.cfg");
-        for (i = 0; i < contents.Length - 1; i++)
-            foreach (string element in (new string[]{
+            contents = File.ReadAllLines($"{path}\\NVI2\\presentations.cfg");
+            for (i = 0; i < contents.Length - 1; i++)
+                foreach (string element in (new string[]{
             "<string name=\"ProgressPresentationUrl\" value=",
                 "<string name=\"ProgressPresentationSelectedPackageUrl\" value="}))
-                if (contents[i].Trim().StartsWith(element))
-                    contents[i] = $"\t\t{element}\"\"/>";
-        File.WriteAllLines($"{path}\\NVI2\\presentations.cfg", contents, System.Text.Encoding.ASCII);
+                    if (contents[i].Trim().StartsWith(element))
+                        contents[i] = $"\t\t{element}\"\"/>";
+            File.WriteAllLines($"{path}\\NVI2\\presentations.cfg", contents, System.Text.Encoding.ASCII);
 
-        Process.Start("explorer.exe", $"/select,\"{path}\\setup.exe\"").Close();
+            Process.Start("explorer.exe", $"/select,\"{path}\\setup.exe\"").Close();
+        }
+        catch (System.IO.DirectoryNotFoundException) { return; }
     }
 }
