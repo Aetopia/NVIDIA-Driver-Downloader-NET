@@ -23,6 +23,7 @@ public class Form : System.Windows.Forms.Form
             Environment.Exit(1);
         }
         this.Text = "NVIDIA Driver Downloader .NET";
+        this.Font = SystemFonts.MessageBoxFont;
         this.MinimumSize = new Size(0, 0);
         this.FormBorderStyle = FormBorderStyle.FixedSingle;
         this.MinimizeBox = false;
