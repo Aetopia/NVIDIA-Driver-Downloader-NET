@@ -29,7 +29,8 @@ A tool to download NVIDIA Driver Packages.<br><br>
         |Core + HD Audio|Graphics Driver + HDMI Audio.|
         |Core + PhysX + HD Audio|Graphics Driver + PhysX + HDMI Audio.|
         |All|All Driver Components.|
-4. Buttons
+        
+    - Buttons
     |Name|Operation|
     |-|-|
     |`[Download]`| Download a NVIDIA Driver Package.|
