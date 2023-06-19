@@ -56,7 +56,7 @@ public class Form : System.Windows.Forms.Form
         extractButton = new Button()
         {
             Text = "Extract",
-            Anchor = AnchorStyles.Bottom | AnchorStyles.Left,
+            Anchor = AnchorStyles.Bottom | AnchorStyles.Left
         },
         downloadButton = new Button()
         {
