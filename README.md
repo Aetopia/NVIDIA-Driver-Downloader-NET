@@ -11,7 +11,24 @@ A tool to download NVIDIA Driver Packages.<br><br>
     |-|-|
     |Driver Version|Select a driver version.
     |Driver Type|Select a driver type.
-    |Driver Components|Select which driver components should be extracted alongside the display driver. 
+    |Driver Components|Select which driver components should be extracted alongside the graphics driver. 
+
+    - Driver Type
+        |Type|
+        |-|
+        |Game Ready DCH| 
+        |Game Ready STD|
+        |Studio DCH|
+        |Studio STD|
+
+    - Driver Components
+        |Component|Included|
+        |-|-|
+        |Core|Graphics Driver Only.|
+        |Core + PhysX|Graphics Driver + PhysX.|
+        |Core + HD Audio|Graphics Driver + HDMI Audio.|
+        |Core + PhysX + HD Audio|Graphics Driver + PhysX + HDMI Audio over HDMI.|
+        |All|All Driver Components.|
 4. 
     - Hit the `[Download]` button to download a NVIDIA Driver Package.
     - Hit the `[Extract]` button to extract a NVIDIA Driver Package.

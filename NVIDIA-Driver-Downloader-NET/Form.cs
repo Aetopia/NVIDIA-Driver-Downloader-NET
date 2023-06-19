@@ -98,7 +98,6 @@ public class Form : System.Windows.Forms.Form
             driverTypeComboBox.Enabled = false;
             driverVersionsComboBox.Enabled = false;
             this.driverComponentsComboBox.Enabled = false;
-            this.statusBar.Text = "Get Driver Versions...";
             driverVersionsComboBox.Items.Clear();
             driverVersionsComboBox.Items.AddRange(NvidiaDownloadApi.GetDriverVersions(nvidiaGpu, studio, standard).ToArray());
             this.statusBar.ResetText();
