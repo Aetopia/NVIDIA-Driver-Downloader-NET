@@ -32,6 +32,7 @@ public class Form : System.Windows.Forms.Form
         this.CenterToScreen();
         bool studio = false, standard = false;
         string tempFolder = Environment.GetEnvironmentVariable("TEMP"), downloadLink = "", fileName = "";
+        
         TableLayoutPanel tableLayoutPanel = new TableLayoutPanel()
         {
             AutoSizeMode = AutoSizeMode.GrowOnly,
