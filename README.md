@@ -22,6 +22,7 @@ A tool to download NVIDIA Driver Packages.<br><br>
         |Studio STD|
 
     - Driver Components
+    
         |Component|Included|
         |-|-|
         |Core|Graphics Driver Only.|
