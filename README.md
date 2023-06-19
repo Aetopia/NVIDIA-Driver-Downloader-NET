@@ -1,6 +1,6 @@
 # NVIDIA Driver Downloader .NET
 A tool to download NVIDIA Driver Packages.<br><br>
-![image](https://github.com/Aetopia/NVIDIA-Driver-Downloader-NET/assets/41850963/32644629-73d5-415a-9d0f-e4ab2542bfc3)
+![image](https://github.com/Aetopia/NVIDIA-Driver-Downloader-NET/assets/41850963/a2132c43-36f3-4ffd-b39e-e9b8f5fcc293)
 
 ## Usage
 1. Download the latest release and open the program.
