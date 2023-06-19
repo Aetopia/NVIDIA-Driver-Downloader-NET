@@ -32,7 +32,6 @@ public class Form : System.Windows.Forms.Form
         this.CenterToScreen();
         bool studio = false, standard = false;
         string tempFolder = Environment.GetEnvironmentVariable("TEMP"), downloadLink = "", fileName = "";
-        
         TableLayoutPanel tableLayoutPanel = new TableLayoutPanel()
         {
             AutoSizeMode = AutoSizeMode.GrowOnly,
@@ -111,7 +110,7 @@ public class Form : System.Windows.Forms.Form
             this.driverComponentsComboBox.Enabled = true;
         });
 
-        driverComponentsComboBox.Items.AddRange(new string[] { "None", "PhysX", "HD Audio", "PhysX + HD Audio", "All" });
+        driverComponentsComboBox.Items.AddRange(new string[] { "Core", "Core + PhysX", "Core + HD Audio", "Core + PhysX + HD Audio", "All" });
         driverComponentsComboBox.SelectedIndex = 0;
 
         downloadButton.Click += (sender, e) =>
