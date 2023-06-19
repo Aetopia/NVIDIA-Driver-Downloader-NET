@@ -5,7 +5,8 @@ A tool to download NVIDIA Driver Packages.<br><br>
 ## Usage
 1. Download the latest release and open the program.
 2. The program will auto detect your system's NVIDIA GPU.
-3. Driver Options: 
+3. Graphic User Inteface Explained:<br>
+    - Driver Options
 
     |Property|Operation|
     |-|-|
@@ -29,7 +30,7 @@ A tool to download NVIDIA Driver Packages.<br><br>
         |Core + HD Audio|Graphics Driver + HDMI Audio.|
         |Core + PhysX + HD Audio|Graphics Driver + PhysX + HDMI Audio.|
         |All|All Driver Components.|
-        
+
     - Buttons
     |Name|Operation|
     |-|-|
