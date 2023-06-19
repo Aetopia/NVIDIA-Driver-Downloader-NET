@@ -7,12 +7,11 @@ A tool to download NVIDIA Driver Packages.<br><br>
 2. The program will auto detect your system's NVIDIA GPU.
 3. Graphic User Inteface Explained:<br>
     - Driver Options
-
-    |Property|Operation|
-    |-|-|
-    |Driver Version|Select a driver version.
-    |Driver Type|Select a driver type.
-    |Driver Components|Select which driver components should be extracted alongside the graphics driver. 
+        |Property|Operation|
+        |-|-|
+        |Driver Version|Select a driver version.
+        |Driver Type|Select a driver type.
+        |Driver Components|Select which driver components should be extracted alongside the graphics driver. 
 
     - Driver Type
         |Type|
