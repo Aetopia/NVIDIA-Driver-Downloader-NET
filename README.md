@@ -29,9 +29,11 @@ A tool to download NVIDIA Driver Packages.<br><br>
         |Core + HD Audio|Graphics Driver + HDMI Audio.|
         |Core + PhysX + HD Audio|Graphics Driver + PhysX + HDMI Audio.|
         |All|All Driver Components.|
-4. 
-    - Hit the `[Download]` button to download a NVIDIA Driver Package.
-    - Hit the `[Extract]` button to extract a NVIDIA Driver Package.
+4. Buttons
+    |Name|Operation|
+    |-|-|
+    |`[Download]`| Download a NVIDIA Driver Package.|
+    |`[Extract]`| Extract a NVIDIA Driver Package.|
 
 ## Building
 1. Download and install the .NET SDK and .NET Framework 4.8.1 Developer Pack from:<br>https://dotnet.microsoft.com/en-us/download/visual-studio-sdks
