@@ -114,6 +114,13 @@ public class Form : System.Windows.Forms.Form
 
         downloadButton.Click += (sender, e) =>
         {
+            if (MessageBox.Show(
+            owner: this,
+         $"Driver Version: {driverVersionsComboBox.Text}\nDriver Type: {driverTypeComboBox.Text}\nDriver Components: {this.driverComponentsComboBox.Text}",
+          "Download?",
+           MessageBoxButtons.YesNo,
+           MessageBoxIcon.Information) == DialogResult.No)
+                return;
             this.statusBar.Text = "Downloading...";
             nvidiaDownloadApiInvoked(true);
             this.progressBar.Visible = true;
@@ -145,6 +152,13 @@ public class Form : System.Windows.Forms.Form
             OpenFileDialog openFileDialog = (new OpenFileDialog() { Filter = "Executable Files (*.exe)|*.exe" });
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
+                if (MessageBox.Show(
+                    owner: this,
+                    $"Driver File: {Path.GetFileName(openFileDialog.FileName)}\nDriver Components: {this.driverComponentsComboBox.Text}",
+                    "Extract?",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Information) == DialogResult.No)
+                    return;
                 nvidiaDownloadApiInvoked(true);
                 (new Thread(() =>
                 {
@@ -174,7 +188,7 @@ public class Form : System.Windows.Forms.Form
     private void ExtractDriverPackage(string fileName, string componentOption)
     {
         this.statusBar.Text = $"Extracting...";
-        string components = "Display.Driver NVI2 EULA.txt ListDevices.txt setup.cfg setup.exe";
+        string components = "Display.Driver NVI2 EULA.txt ListDevices.txt setup.cfg setup.exe ";
         int i = 0;
         string
         sevenZipFileName = $"{Environment.GetEnvironmentVariable("TEMP")}/7zr.exe",
@@ -182,15 +196,15 @@ public class Form : System.Windows.Forms.Form
         Process process;
         string[] contents;
 
-        switch (componentOption)
+        switch (this.driverComponentsComboBox.Text)
         {
-            case "PhysX":
+            case "Core + PhysX":
                 components += "PhysX";
                 break;
-            case "HD Audio":
+            case "Core + HD Audio":
                 components += "HDAudio";
                 break;
-            case "PhysX + HD Audio":
+            case "Core + PhysX + HD Audio":
                 components += "PhysX HDAudio";
                 break;
             case "All":
@@ -258,7 +272,12 @@ public class Form : System.Windows.Forms.Form
                         contents[i] = $"\t\t{element}\"\"/>";
             File.WriteAllLines($"{path}\\NVI2\\presentations.cfg", contents, System.Text.Encoding.ASCII);
 
-            Process.Start("explorer.exe", $"/select,\"{path}\\setup.exe\"").Close();
+            Process.Start(new ProcessStartInfo()
+            {
+                FileName = "cmd.exe",
+                Arguments = $"/c explorer.exe /select,\"{path}\\setup.exe\"",
+                WindowStyle = ProcessWindowStyle.Hidden
+            }).Close();
         }
         catch (System.IO.DirectoryNotFoundException) { return; }
     }
